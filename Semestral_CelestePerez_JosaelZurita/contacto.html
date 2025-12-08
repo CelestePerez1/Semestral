@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contacto - Turismo Coclé</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+<!-- ========================== HEADER ========================== -->
+<header class="site-header">
+    <div class="container flex-between">
+        <a href="index.html" class="brand">Turismo Coclé</a>
+
+        <nav>
+          <ul class="nav-list">
+                    <li><a href="index.html" class="active">Inicio</a></li>
+                    <li><a href="paquetes.html">Paquetes</a></li>
+                    <li><a href="about.html">Sobre Nosotros</a></li>
+                    <li><a href="juego.html">Juego</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+        </nav>
+
+        <div class="hamburger" id="hamburger">&#9776;</div>
+    </div>
+</header>
+
+
+<!-- ========================== FORMULARIO ========================== -->
+<main class="container" style="margin-top:2rem;">
+
+    <section style="text-align:center; margin-bottom:2rem;">
+        <h1 style="font-size:2.2rem; color:#1c355e;">Contáctanos</h1>
+        <p style="max-width:700px; margin:auto; color:#444;">
+            Si tienes preguntas, dudas, sugerencias o deseas más información sobre nuestros destinos,
+            ¡estamos aquí para ayudarte!
+        </p>
+    </section>
+
+    <!-- CONTENEDOR FORMULARIO -->
+    <div style="
+        background:#e7f4ff;
+        padding:2rem;
+        max-width:750px;
+        margin:auto;
+        border-radius:15px;
+        box-shadow:0 4px 14px rgba(0,0,0,0.12);
+    ">
+
+        <form id="contactForm" novalidate>
+
+            <!-- Nombre -->
+            <div style="margin-bottom:1.2rem;">
+                <label for="nombre" style="font-weight:bold;">Nombre Completo</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre"
+                    style="width:100%; padding:.7rem; margin-top:.3rem; border-radius:8px; border:1px solid #ccc;">
+                <small id="errorNombre" style="color:red; display:none;">Debe ingresar un nombre válido.</small>
+            </div>
+
+            <!-- Email -->
+            <div style="margin-bottom:1.2rem;">
+                <label for="email" style="font-weight:bold;">Correo Electrónico</label>
+                <input type="email" id="email" name="email" placeholder="ejemplo@correo.com"
+                    style="width:100%; padding:.7rem; margin-top:.3rem; border-radius:8px; border:1px solid #ccc;">
+                <small id="errorEmail" style="color:red; display:none;">Ingrese un correo válido.</small>
+            </div>
+
+            <!-- Teléfono -->
+            <div style="margin-bottom:1.2rem;">
+                <label for="telefono" style="font-weight:bold;">Teléfono</label>
+                <input type="tel" id="telefono" name="telefono" placeholder="6000-0000"
+                    style="width:100%; padding:.7rem; margin-top:.3rem; border-radius:8px; border:1px solid #ccc;">
+                <small id="errorTelefono" style="color:red; display:none;">Ingrese un número válido (solo dígitos).</small>
+            </div>
+
+            <!-- Mensaje -->
+            <div style="margin-bottom:1.2rem;">
+                <label for="mensaje" style="font-weight:bold;">Mensaje</label>
+                <textarea id="mensaje" name="mensaje" rows="5"
+                    placeholder="Escribe tu mensaje aquí..."
+                    style="width:100%; padding:.7rem; margin-top:.3rem; border-radius:8px; border:1px solid #ccc;"></textarea>
+                <small id="errorMensaje" style="color:red; display:none;">Debe escribir un mensaje.</small>
+            </div>
+
+            <!-- Botón -->
+            <button type="submit" style="
+                background:#0b6;
+                color:#fff;
+                padding:.8rem 1.5rem;
+                font-size:1rem;
+                border:none;
+                cursor:pointer;
+                border-radius:8px;
+                width:100%;
+                font-weight:bold;
+            ">
+                Enviar Mensaje
+            </button>
+
+            <p id="formSuccess" style="color:green; margin-top:1rem; display:none; text-align:center;">
+                ¡Mensaje enviado con éxito!
+            </p>
+
+        </form>
+    </div>
+
+</main>
+
+
+<!-- ========================== FOOTER ========================== -->
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <h4>Turismo Coclé</h4>
+                <p>Descubre la riqueza turística de la provincia.</p>
+            </div>
+
+            <div>
+                <h4>Enlaces</h4>
+                <p><a href="index.html" style="color:#fff;">Inicio</a></p>
+                <p><a href="paquetes.html" style="color:#fff;">Paquetes</a></p>
+                <p><a href="sobrenosotros.html" style="color:#fff;">Sobre Nosotros</a></p>
+            </div>
+
+            <div>
+                <h4>Contacto</h4>
+                <p>info@turismococle.com</p>
+                <p>+507 6000-0000</p>
+            </div>
+
+            <div>
+                <h4>Redes</h4>
+                <p>Instagram</p>
+                <p>Facebook</p>
+                <p>Twitter</p>
+            </div>
+        </div>
+
+        <p class="footer-bottom">
+            &copy; <span id="year"></span> Turismo Coclé | Todos los derechos reservados.
+        </p>
+    </div>
+</footer>
+
+
+<!-- ========================== VALIDACIÓN JS ========================== -->
+<script>
+// Footer year
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// Menú hamburguesa
+document.getElementById("hamburger").addEventListener("click",()=>{
+    document.getElementById("navList").classList.toggle("open");
+});
+
+// Validación del formulario
+const form = document.getElementById("contactForm");
+
+form.addEventListener("submit", function(e){
+    e.preventDefault();
+
+    let valid = true;
+
+    // Campos
+    const nombre = document.getElementById("nombre");
+    const email = document.getElementById("email");
+    const telefono = document.getElementById("telefono");
+    const mensaje = document.getElementById("mensaje");
+
+    // Mensajes de error
+    const errNom = document.getElementById("errorNombre");
+    const errEma = document.getElementById("errorEmail");
+    const errTel = document.getElementById("errorTelefono");
+    const errMsj = document.getElementById("errorMensaje");
+
+    errNom.style.display = "none";
+    errEma.style.display = "none";
+    errTel.style.display = "none";
+    errMsj.style.display = "none";
+
+    // Validaciones
+    if(nombre.value.trim().length < 3){
+        errNom.style.display = "block";
+        valid = false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!emailRegex.test(email.value)){
+        errEma.style.display = "block";
+        valid = false;
+    }
+
+    const telRegex = /^[0-9]{7,12}$/;
+    if(!telRegex.test(telefono.value)){
+        errTel.style.display = "block";
+        valid = false;
+    }
+
+    if(mensaje.value.trim().length < 5){
+        errMsj.style.display = "block";
+        valid = false;
+    }
+
+    if(valid){
+        document.getElementById("formSuccess").style.display = "block";
+        form.reset();
+    }
+});
+</script>
+
+</body>
+</html>

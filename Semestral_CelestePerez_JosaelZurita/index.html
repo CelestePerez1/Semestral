@@ -1,135 +1,194 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Turismo de Coclé</title>
-<link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Turismo de Coclé</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- Modal bienvenida -->
-<div id="welcomeModal" class="modal hidden">
-<div class="modal-content">
-<button class="close" id="closeWelcome">×</button>
-<h2>Bienvenido a Turismo de Coclé</h2>
-<p>Explora los mejores sitios y paquetes turísticos.</p>
-<a class="btn" href="#">Comenzar</a>
-</div>
-</div>
+    <!-- Modal Bienvenida -->
+    <div id="welcomeModal" class="modal hidden">
+        <div class="modal-content">
+            <button class="close" id="closeWelcome">×</button>
+            <h2>Bienvenido a Turismo de Coclé</h2>
+            <p>Explora los mejores sitios y paquetes turísticos.</p>
+            <a class="btn" href="#">Comenzar</a>
+        </div>
+    </div>
 
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container flex-between">
+            <a class="brand" href="index.html">Turismo Coclé</a>
 
-<!-- Header / Navbar -->
-<header class="site-header">
-<div class="container flex-between">
-<a class="brand" href="index.html">Turismo Coclé</a>
+            <nav id="mainNav" class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="active">Inicio</a></li>
+                    <li><a href="paquetes.html">Paquetes</a></li>
+                    <li><a href="about.html">Sobre Nosotros</a></li>
+                    <li><a href="juego.html">Juego</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="login.html">Iniciar Sesions</a></li>
+                </ul>
+            </nav>
 
+            <div class="actions">
+                <button id="cartBtn" class="icon">Carrito (<span id="cartCount">0</span>)</button>
+                <button id="hamburger" class="hamburger" aria-label="Menú">☰</button>
+            </div>
+        </div>
+    </header>
 
-<nav id="mainNav" class="nav">
-<ul class="nav-list">
-<li><a href="index.html">Inicio</a></li>
-<li><a href="paquetes.html">Paquetes</a></li>
-<li><a href="about.html">Sobre Nosotros</a></li>
-<li><a href="juego.html">Juego</a></li>
-<li><a href="contacto.html">Contacto</a></li>
-</ul>
-</nav>
+    <!-- ====================== SLIDER PRINCIPAL ====================== -->
+    <section class="hero">
 
+        <div class="slider-container">
+            <div class="slider" id="slider">
 
-<div class="actions">
-<button id="cartBtn" class="icon">Carrito (<span id="cartCount">0</span>)</button>
-<button id="hamburger" class="hamburger" aria-label="menu">☰</button>
-</div>
-</div>
-</header>
+                <div class="slide">
+                    <img src="https://www.laestrella.com.pa/binrepository/667x834/-17c330/700d390/none/199516884/JNMR/flor-del-aire-desde-la-india-dormi_181-8666534_20241115085345.jpg" alt="">
+                </div>
 
+                <div class="slide">
+                    <img src="https://images.myguide-cdn.com/panama/companies/el-cope-national-park/large/el-cope-national-park-505762.jpg" alt="">
+                </div>
 
-<!-- Slider principal -->
-<section class="hero">
-<div class="slider" id="slider">
-<img src="assets/images/slide1.jpg" alt="Sitio 1">
-<img src="assets/images/slide2.jpg" alt="Sitio 2">
-<img src="assets/images/slide3.jpg" alt="Sitio 3">
-</div>
-<div class="hero-text container">
-<h1>Descubre Coclé</h1>
-<p>Objetivo: Promover el turismo local, mostrar paquetes y facilitar reservas.</p>
-</div>
-</section>
+                <div class="slide">
+                    <img src="https://recorriendopanama.com/wp-content/uploads/2017/08/entrada-al-parque2.jpg?w=966" alt="">
+                </div>
 
-<!-- Sección informativa -->
-<main class="container">
-<section class="overview">
-<h2>¿Por qué visitar Coclé?</h2>
-<p>Coclé ofrece playas, montañas, tradición y gastronomía. Nuestra web presenta destinos, paquetes y un sistema de compra sencillo.</p>
-</section>
+            </div>
 
+            <!-- Botones -->
+            <button id="prevSlide" class="slide-btn">❮</button>
+            <button id="nextSlide" class="slide-btn">❯</button>
+        </div>
 
-<section class="highlights grid-3">
-<article>
-<h3>Playa Farallón</h3>
-<p>Playas tranquilas y actividades acuáticas.</p>
-</article>
-<article>
-<h3>El Valle</h3>
-<p>Senderismo, miradores y cultura local.</p>
-</article>
-<article>
-<h3>Mercados</h3>
-<p>Gastronomía tradicional y artesanías.</p>
-</article>
-</section>
-</main>
+        <div class="hero-text container">
+            <h1>Descubre Coclé</h1>
+            <p>Objetivo: Promover el turismo local, mostrar paquetes y facilitar reservas.</p>
+        </div>
+    </section>
 
+    <!-- ====================== CONTENIDO PRINCIPAL ====================== -->
+    <main class="container">
 
-<!-- Footer profesional -->
-<footer class="site-footer">
-<div class="container footer-grid">
-<div>
-<h4>Enlaces</h4>
-<ul>
-<li><a href="index.html">Inicio</a></li>
-<li><a href="paquetes.html">Paquetes</a></li>
-</ul>
-</div>
-<div>
-<h4>Contacto</h4>
-<p>tel: +507 6xx-xxxx</p>
-<p>email: info@turismococle.example</p>
-</div>
-<div>
-<h4>Redes</h4>
-<p>Facebook | Instagram</p>
-</div>
-<div>
-<h4>Mapa</h4>
-<p>Incrustar mapa aquí</p>
-</div>
-</div>
-<div class="footer-bottom">© <span id="year"></span> Turismo de Coclé</div>
-</footer>
+        <section class="overview">
+            <h2>¿Por qué visitar Coclé?</h2>
+            <p>
+                Coclé ofrece playas, montañas, tradición y gastronomía. 
+                Nuestra web presenta destinos, paquetes y un sistema de compra sencillo.
+            </p>
+        </section>
 
-<!-- Chatbot accesible -->
-<div id="chatbot" class="chatbot hidden">
-<div class="chat-header">
-<span>Asistente</span>
-<button id="closeChat">×</button>
-</div>
-<div id="chatMessages" class="chat-messages"></div>
-<div class="chat-input">
-<input id="chatInput" placeholder="Escribe..." />
-<button id="sendChat">Enviar</button>
-</div>
-</div>
-<button id="openChatBtn" class="chat-toggle">Chat</button>
+        <section class="highlights grid-3">
+            <article>
+                <h3>Playa Farallón</h3>
+                <p>Playas tranquilas y actividades acuáticas.</p>
+            </article>
 
+            <article>
+                <h3>El Valle</h3>
+                <p>Senderismo, miradores y cultura local.</p>
+            </article>
 
+            <article>
+                <h3>Mercados</h3>
+                <p>Gastronomía tradicional y artesanías.</p>
+            </article>
+        </section>
 
+    </main>
 
-<script src="cart.js"></script>
-<script src="auth.js"></script>
-<script src="js/chatbot.js"></script>
-<script src="js/game.js"></script>
-<script src="main.js"></script>
+    <!-- ====================== FOOTER ====================== -->
+    <footer class="site-footer">
+        <div class="container footer-grid">
+
+            <div>
+                <h4>Enlaces</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="paquetes.html">Paquetes</a></li>
+                    <li><a href="about.html">Sobre Nosotros</a></li>
+                    <li><a href="about.html">Sobre Nosotros</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4>Contacto</h4>
+                <p>Tel: +507 6xx-xxxx</p>
+                <p>Email: info@turismococle.example</p>
+            </div>
+
+            <div>
+                <h4>Redes</h4>
+                <p>Facebook | Instagram</p>
+            </div>
+
+            <div>
+                <h4>Mapa</h4>
+                <p>Incrustar mapa aquí</p>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            © <span id="year"></span> Turismo de Coclé
+        </div>
+    </footer>
+
+    <!-- ====================== CHATBOT ====================== -->
+    <div id="chatbot" class="chatbot hidden">
+        <div class="chat-header">
+            <span>Asistente</span>
+            <button id="closeChat">×</button>
+        </div>
+
+        <div id="chatMessages" class="chat-messages"></div>
+
+        <div class="chat-input">
+            <input id="chatInput" placeholder="Escribe..." />
+            <button id="sendChat">Enviar</button>
+        </div>
+    </div>
+
+    <button id="openChatBtn" class="chat-toggle">Chat</button>
+
+    <!-- ====================== SCRIPTS ====================== -->
+    <script src="cart.js"></script>
+    <script src="auth.js"></script>
+    <script src="js/chatbot.js"></script>
+    <script src="js/game.js"></script>
+
+    <!-- Script del Slider -->
+    <script>
+        let currentSlide = 0;
+        const slider = document.getElementById("slider");
+        const totalSlides = document.querySelectorAll(".slide").length;
+
+        function showSlide(index) {
+            currentSlide = (index + totalSlides) % totalSlides;
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        document.getElementById("nextSlide").addEventListener("click", () => {
+            showSlide(currentSlide + 1);
+        });
+
+        document.getElementById("prevSlide").addEventListener("click", () => {
+            showSlide(currentSlide - 1);
+        });
+
+        setInterval(() => {
+            showSlide(currentSlide + 1);
+        }, 4000);
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
+    <script src="main.js"></script>
+
 </body>
 </html>

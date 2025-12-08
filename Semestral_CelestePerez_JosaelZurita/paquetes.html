@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paquetes Turísticos - Coclé</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container flex-between">
+        <a class="brand" href="index.html">Turismo Coclé</a>
+        <nav class="nav">
+            <nav id="mainNav" class="nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="active">Inicio</a></li>
+                    <li><a href="paquetes.html">Paquetes</a></li>
+                    <li><a href="about.html">Sobre Nosotros</a></li>
+                    <li><a href="juego.html">Juego</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+
+        </nav>
+    </div>
+</header>
+
+<section class="container">
+    <h1 class="title">Paquetes Turísticos de Coclé</h1>
+    <p class="subtitle">Explora experiencias únicas dentro de la provincia.</p>
+
+    <div class="grid-3 packages-grid">
+
+        <!-- EL VALLE DE ANTÓN -->
+        <article class="package-card">
+                   <img src="https://www.laestrella.com.pa/binrepository/667x834/-17c330/700d390/none/199516884/JNMR/flor-del-aire-desde-la-india-dormi_181-8666534_20241115085345.jpg" alt="Sitio turístico 1">
+            <div class="package-info">
+                <h2>El Valle de Antón</h2>
+                <p>
+                    Un precioso valle ubicado dentro de un cráter volcánico, famoso por sus senderos, 
+                    pozos termales, miradores y su clima fresco durante todo el año.
+                </p>
+                <p><strong>Incluye:</strong> Transporte, guía turístico, senderismo y almuerzo.</p>
+                <button class="btn">Reservar</button>
+            </div>
+        </article>
+
+        <!-- PARQUE ARQUEOLÓGICO EL CAÑO (NATÁ) -->
+        <article class="package-card">
+            <img src="https://recorriendopanama.com/wp-content/uploads/2017/08/entrada-al-parque2.jpg?w=966" alt="Sitio turístico 3">
+            <div class="package-info">
+                <h2>Parque Arqueológico El Caño (Natá)</h2>
+                <p>
+                    Conocido por sus estructuras ceremoniales y descubrimientos de tumbas precolombinas 
+                    que muestran la riqueza cultural de los antiguos pueblos de Coclé.
+                </p>
+                <p><strong>Incluye:</strong> Recorrido guiado, entrada al museo y transporte.</p>
+                <button class="btn">Reservar</button>
+            </div>
+        </article>
+
+        <!-- PARQUE NACIONAL DE COPÉ -->
+        <article class="package-card">
+                        <img src="https://images.myguide-cdn.com/panama/companies/el-cope-national-park/large/el-cope-national-park-505762.jpg" alt="Sitio turístico 2">
+            <div class="package-info">
+                <h2>Parque Nacional de Copé</h2>
+                <p>
+                    Una joya ecológica natural ideal para observación de aves, ríos cristalinos, 
+                    cascadas y una gran biodiversidad dentro de la Cordillera Central.
+                </p>
+                <p><strong>Incluye:</strong> Guía especializado, senderismo y transporte.</p>
+                <button class="btn">Reservar</button>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+<footer class="site-footer">
+    <div class="footer-bottom">
+        © <span id="year"></span> Turismo de Coclé
+    </div>
+</footer>
+
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

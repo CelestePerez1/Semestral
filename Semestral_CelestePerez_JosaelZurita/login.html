@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turismo Coclé - Inicio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ==========================
+     HEADER
+========================== -->
+<header class="site-header">
+    <div class="container flex-between">
+        <a href="#" class="brand">🌴 Turismo Coclé</a>
+
+        <nav>
+            <ul class="nav-list" id="navList">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="sitios.html">Sitios</a></li>
+                <li><a href="paquetes.html">Paquetes</a></li>
+                <li><a href="juego.html">Juego</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="about.html">Sobre Nosotros</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="#" id="cartBtn">Carrito 🛒 (<span id="cartCount">0</span>)</a></li>
+            </ul>
+        </nav>
+
+        <button class="hamburger" id="hamburgerBtn">☰</button>
+    </div>
+</header>
+
+
+<!-- ==========================
+     HERO SLIDER
+========================== -->
+<section class="hero">
+    <div class="slider" id="slider">
+        <div class="slide"><img src="img/valle1.jpg" alt="El Valle de Antón"></div>
+        <div class="slide"><img src="img/cano1.jpg" alt="Parque Arqueológico El Caño"></div>
+        <div class="slide"><img src="img/cope1.jpg" alt="Parque Nacional Omar Torrijos"></div>
+    </div>
+
+    <div class="hero-text">
+        <h2>Explora la magia de Coclé</h2>
+        <p>Historia, naturaleza y experiencias inolvidables</p>
+    </div>
+</section>
+
+
+<!-- ==========================
+     SECCIÓN LOGIN EN INDEX
+========================== -->
+<section class="container" style="margin-top: 3rem;">
+    <div 
+        class="login-container"
+        style="
+            max-width: 420px;
+            margin: auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 14px;
+            box-shadow: 0 6px 20px rgba(0,0,0,.15);
+        ">
+
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">🔐</div>
+            <h2 style="color:#0d1b2a;">Iniciar Sesión</h2>
+            <p style="color: #666; margin-top: 0.5rem;">Accede al panel de administración</p>
+        </div>
+
+        <input 
+            type="text" 
+            id="user" 
+            placeholder="Usuario"
+            style="width:100%; padding:1rem; margin:.5rem 0; border:2px solid #5aa9ff; border-radius:10px; font-size:1rem;"
+        >
+
+        <input 
+            type="password" 
+            id="pass" 
+            placeholder="Contraseña"
+            style="width:100%; padding:1rem; margin:.5rem 0; border:2px solid #5aa9ff; border-radius:10px; font-size:1rem;"
+        >
+
+        <button 
+            onclick="login()"
+            style="
+                width:100%;
+                background:#5aa9ff;
+                color:white;
+                padding:1rem;
+                border:none;
+                border-radius:25px;
+                cursor:pointer;
+                font-size:1.1rem;
+                margin-top:1rem;
+                transition:.3s;
+            "
+        >
+            Entrar
+        </button>
+
+        <div style="margin-top:2rem; padding:1rem; background:#e7f3ff; border-radius:10px; border-left:4px solid #5aa9ff;">
+            <p style="font-size:.9rem; color:#0d1b2a; margin:0;">
+                <strong>Credenciales de prueba:</strong><br>
+                Usuario: <strong>admin</strong><br>
+                Contraseña: <strong>123</strong>
+            </p>
+        </div>
+
+        <div style="margin-top:1rem; text-align:center;">
+            <a href="index.html" style="color:#5aa9ff; text-decoration:none; font-size:.9rem;">
+                ← Volver al inicio
+            </a>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ==========================
+     FOOTER
+========================== -->
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div>
+            <h4>Enlaces</h4>
+            <a href="index.html">Inicio</a><br>
+            <a href="sitios.html">Sitios</a><br>
+            <a href="paquetes.html">Paquetes</a><br>
+            <a href="sobre.html">Sobre Nosotros</a>
+        </div>
+
+        <div>
+            <h4>Contacto</h4>
+            <p>Email: info@turismococle.com</p>
+            <p>Tel: +507 6000-0000</p>
+            <a href="contacto.html">Formulario</a>
+        </div>
+
+        <div>
+            <h4>Redes Sociales</h4>
+            <a href="#">Facebook</a><br>
+            <a href="#">Instagram</a><br>
+            <a href="#">Twitter</a>
+        </div>
+
+        <div>
+            <h4>Ubicación</h4>
+            <p>Provincia de Coclé</p>
+            <p>República de Panamá</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 Turismo Coclé — Todos los derechos reservados
+    </div>
+</footer>
+
+<!-- ==========================
+     JS
+========================== -->
+<script src="cart.js"></script>
+<script src="login.js"></script>
+<script src="chatbot.js"></script>
+
+<script>
+document.getElementById("hamburgerBtn").onclick = () => {
+    document.getElementById("navList").classList.toggle("active");
+};
+</script>
+
+</body>
+</html>
