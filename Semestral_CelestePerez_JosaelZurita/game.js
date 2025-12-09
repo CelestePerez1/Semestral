@@ -1,306 +1,170 @@
-// =========================
-// CONFIGURACIÓN DEL JUEGO
-// =========================
+const OPENAI_API_KEY = window.ENV?.OPENAI_API_KEY || "";
 
-const defaultConfig = {
-    game_title: "🎮 Memorama Turístico de Coclé",
-    game_subtitle: "Encuentra las parejas de íconos turísticos",
-    instructions: "Haz clic en las cartas para voltearlas y encuentra todas las parejas. ¡Hazlo en el menor tiempo posible!",
-    scores_title: "🏆 Mejores Tiempos",
-    primary_color: "#667eea",
-    secondary_color: "#764ba2",
-    accent_color: "#11998e",
-    success_color: "#38ef7d",
-    card_color: "#f093fb"
+if (!OPENAI_API_KEY) {
+    console.error("⚠️ ERROR: Falta la variable de entorno OPENAI_API_KEY");
+}
+
+const chatBody = document.querySelector(".chat-body");
+const messageInput = document.querySelector(".message-input");
+const sendMessageButton = document.querySelector("#send-message");
+const fileInput = document.querySelector("#file-input");
+const fileUploadWrapper = document.querySelector(".file-upload-wrapper");
+const fileCancelButton = document.querySelector("#file-cancel");
+const chatbotToggler = document.querySelector("#chatbot-toggler");
+const CloseChatbot = document.querySelector("#close-chatbot");
+
+const API_URL = "https://api.openai.com/v1/chat/completions";
+
+const chatHistory = [];
+const initialInputHeight = messageInput.scrollHeight;
+
+// Scroll al final
+const scrollToLatestMessage = () => {
+    chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
 };
 
-const gameIcons = ['🏖️', '⛰️', '🌊', '🌺', '⛪', '🎭', '🌴', '☀️'];
-
-let gameState = {
-    cards: [],
-    flippedCards: [],
-    matchedPairs: 0,
-    moves: 0,
-    time: 0,
-    timer: null,
-    isPaused: false,
-    isGameActive: false
+// Crear mensaje
+const createMessageElement = (content, ...classes) => {
+    const div = document.createElement("div");
+    div.classList.add("message", ...classes);
+    div.innerHTML = content;
+    return div;
 };
 
-let allScores = [];
+// ===============================
+// 🤖 RESPUESTA DEL BOT
+// ===============================
+const generateBotResponse = async (incomingMessageDiv) => {
+    const messageElement = incomingMessageDiv.querySelector(".message-text");
 
-
-// =========================
-// DATA SDK
-// =========================
-
-const dataHandler = {
-    onDataChanged(data) {
-        allScores = data.filter(r => r.type === 'score');
-        renderScores();
-    }
-};
-
-async function initDataSDK() {
-    const initResult = await window.dataSdk.init(dataHandler);
-    if (!initResult.isOk) console.error("Error al inicializar Data SDK");
-}
-
-
-// =========================
-// CONFIG SDK (editable)
-// =========================
-
-async function onConfigChange(config) {
-    document.documentElement.style.setProperty('--primary-color', config.primary_color || defaultConfig.primary_color);
-    document.documentElement.style.setProperty('--secondary-color', config.secondary_color || defaultConfig.secondary_color);
-
-    document.getElementById('gameTitle').textContent = config.game_title || defaultConfig.game_title;
-    document.getElementById('gameSubtitle').textContent = config.game_subtitle || defaultConfig.game_subtitle;
-    document.getElementById('gameInstructions').textContent = config.instructions || defaultConfig.instructions;
-    document.getElementById('scoresTitle').textContent = config.scores_title || defaultConfig.scores_title;
-}
-
-if (window.elementSdk) {
-    window.elementSdk.init({
-        defaultConfig,
-        onConfigChange,
-        mapToCapabilities: (config) => ({
-            recolorables: [
-                { get: () => config.primary_color, set: (v) => { config.primary_color = v; window.elementSdk.setConfig({ primary_color: v }); }},
-                { get: () => config.secondary_color, set: (v) => { config.secondary_color = v; window.elementSdk.setConfig({ secondary_color: v }); }},
-                { get: () => config.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); }}
-            ]
-        }),
-        mapToEditPanelValues: (config) => new Map([
-            ['game_title', config.game_title],
-            ['game_subtitle', config.game_subtitle],
-            ['instructions', config.instructions],
-            ['scores_title', config.scores_title]
-        ])
-    });
-}
-
-
-// =========================
-// FUNCIONES PRINCIPALES
-// =========================
-
-function initGame() {
-    const gameBoard = document.getElementById('gameBoard');
-    const doubledIcons = [...gameIcons, ...gameIcons];
-
-    gameState.cards = doubledIcons.sort(() => Math.random() - 0.5);
-    gameState.flippedCards = [];
-    gameState.matchedPairs = 0;
-    gameState.moves = 0;
-    gameState.time = 0;
-    gameState.isPaused = false;
-    gameState.isGameActive = true;
-
-    gameBoard.innerHTML = gameState.cards.map((icon, index) => `
-        <div class="game-card" data-index="${index}" onclick="flipCard(${index})">
-            <span class="card-icon">${icon}</span>
-        </div>
-    `).join('');
-
-    updateStats();
-
-    if (gameState.timer) clearInterval(gameState.timer);
-
-    gameState.timer = setInterval(() => {
-        if (!gameState.isPaused && gameState.isGameActive) {
-            gameState.time++;
-            document.getElementById('gameTime').textContent = gameState.time;
-        }
-    }, 1000);
-
-    document.getElementById('pauseBtn').textContent = '⏸️ Pausar';
-}
-
-function updateStats() {
-    document.getElementById('gameMoves').textContent = gameState.moves;
-    document.getElementById('gamePairs').textContent = gameState.matchedPairs;
-    document.getElementById('gameTime').textContent = gameState.time;
-}
-
-function flipCard(index) {
-    if (!gameState.isGameActive || gameState.isPaused) return;
-
-    const card = document.querySelector(`[data-index="${index}"]`);
-
-    if (card.classList.contains('flipped') ||
-        card.classList.contains('matched') ||
-        gameState.flippedCards.length === 2) return;
-
-    card.classList.add('flipped');
-    gameState.flippedCards.push({ index, icon: gameState.cards[index], element: card });
-
-    if (gameState.flippedCards.length === 2) {
-        gameState.moves++;
-        updateStats();
-        setTimeout(checkMatch, 800);
-    }
-}
-
-function checkMatch() {
-    const [card1, card2] = gameState.flippedCards;
-
-    if (card1.icon === card2.icon) {
-        card1.element.classList.add('matched');
-        card1.element.classList.remove('flipped');
-
-        card2.element.classList.add('matched');
-        card2.element.classList.remove('flipped');
-
-        gameState.matchedPairs++;
-        updateStats();
-
-        if (gameState.matchedPairs === gameIcons.length) {
-            gameState.isGameActive = false;
-            clearInterval(gameState.timer);
-            setTimeout(showVictory, 500);
-        }
-    } else {
-        card1.element.classList.remove('flipped');
-        card2.element.classList.remove('flipped');
-    }
-
-    gameState.flippedCards = [];
-}
-
-function showVictory() {
-    document.getElementById('finalTime').textContent = gameState.time;
-    document.getElementById('finalMoves').textContent = gameState.moves;
-    document.getElementById('victoryModal').style.display = 'flex';
-    document.getElementById('playerName').focus();
-}
-
-async function saveScore(event) {
-    event.preventDefault();
-
-    const playerName = document.getElementById('playerName').value.trim();
-    if (!playerName) return;
-
-    if (allScores.length >= 999) {
-        showNotification("⚠️ Límite de puntuaciones alcanzado.");
-        return;
-    }
-
-    const btn = document.getElementById('saveBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="loading-spinner"></span> Guardando...';
-
-    const result = await window.dataSdk.create({
-        id: "score-" + Date.now(),
-        type: "score",
-        playerName,
-        gameScore: gameState.matchedPairs,
-        gameTime: gameState.time,
-        gameMoves: gameState.moves,
-        createdAt: new Date().toISOString()
+    chatHistory.push({
+        role: "user",
+        content: userData.message
     });
 
-    btn.disabled = false;
-    btn.textContent = "💾 Guardar Puntuación";
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${OPENAI_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: "gpt-4o-mini",
+                messages: chatHistory,
+                temperature: 0.7
+            })
+        });
 
-    if (result.isOk) {
-        document.getElementById('victoryModal').style.display = 'none';
-        document.getElementById('nameForm').reset();
-        showNotification("✅ ¡Puntuación guardada!");
-    } else {
-        showNotification("❌ Error al guardar puntuación.");
+        const data = await response.json();
+
+        if (!response.ok) throw new Error(data.error.message);
+
+        const botText = data.choices[0].message.content;
+
+        messageElement.innerText = botText;
+
+        chatHistory.push({
+            role: "assistant",
+            content: botText
+        });
+
+    } catch (error) {
+        messageElement.innerText = "❌ Error: " + error.message;
+        messageElement.style.color = "red";
+    } finally {
+        incomingMessageDiv.classList.remove("thinking");
+        scrollToLatestMessage();
     }
-}
+};
 
-function renderScores() {
-    const scoresList = document.getElementById('scoresList');
+// ===============================
+// 📤 Enviar mensaje
+// ===============================
+const handleOutgoingMessage = (e) => {
+    e.preventDefault();
+    userData.message = messageInput.value.trim();
+    if (!userData.message) return;
 
-    if (allScores.length === 0) {
-        scoresList.innerHTML = `<div class="empty-scores">No hay puntuaciones aún. ¡Sé el primero!</div>`;
-        return;
-    }
+    messageInput.value = "";
+    fileUploadWrapper.classList.remove("file-uploaded");
+    messageInput.dispatchEvent(new Event("input"));
 
-    const sortedScores = [...allScores]
-        .sort((a, b) => a.gameTime === b.gameTime ? a.gameMoves - b.gameMoves : a.gameTime - b.gameTime)
-        .slice(0, 10);
-
-    const medals = ['🥇', '🥈', '🥉'];
-
-    scoresList.innerHTML = sortedScores.map((score, index) => `
-        <div class="score-item">
-            <div class="score-rank">${medals[index] || (index + 1) + '.'}</div>
-            <div class="score-info">
-                <div class="score-name">${score.playerName}</div>
-                <div class="score-details">${score.gameMoves} movimientos • ${new Date(score.createdAt).toLocaleDateString("es-ES")}</div>
-            </div>
-            <div class="score-time">${score.gameTime}s</div>
-        </div>
-    `).join('');
-}
-
-function resetGame() {
-    if (gameState.timer) clearInterval(gameState.timer);
-    initGame();
-    showNotification("🎮 ¡Nuevo juego iniciado!");
-}
-
-function pauseGame() {
-    const btn = document.getElementById('pauseBtn');
-
-    if (!gameState.isGameActive) return;
-
-    gameState.isPaused = !gameState.isPaused;
-
-    if (gameState.isPaused) {
-        btn.textContent = "▶️ Reanudar";
-        btn.classList.add("btn-secondary");
-        showNotification("⏸️ Juego pausado");
-    } else {
-        btn.textContent = "⏸️ Pausar";
-        btn.classList.remove("btn-secondary");
-        showNotification("▶️ Juego reanudado");
-    }
-}
-
-
-// =========================
-// UTILIDADES
-// =========================
-
-function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        padding: 1rem 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        z-index: 2000;
-        animation: slideIn 0.3s;
+    const messageContent = `
+        <div class="message-text"></div>
+        ${userData.file.data ? `<img src="data:${userData.file.mime_type};base64,${userData.file.data}" class="attachment" />` : ""}
     `;
-    notification.textContent = message;
-    document.body.appendChild(notification);
+
+    const outgoingMessageDiv = createMessageElement(messageContent, "user-message");
+    outgoingMessageDiv.querySelector(".message-text").textContent = userData.message;
+    chatBody.appendChild(outgoingMessageDiv);
+
+    scrollToLatestMessage();
 
     setTimeout(() => {
-        notification.style.animation = "fadeOut 0.3s";
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
+        const incomingContent = `
+            <svg class="bot-avatar" width="40" height="40">
+                <circle cx="20" cy="20" r="20" fill="#5aa9ff"/>
+            </svg>
+            <div class="message-text">
+                <div class="thinking-indicator">
+                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                </div>
+            </div>`;
 
+        const incomingMessageDiv = createMessageElement(incomingContent, "bot-message", "thinking");
+        chatBody.appendChild(incomingMessageDiv);
 
-// =========================
-// INICIALIZACIÓN
-// =========================
+        scrollToLatestMessage();
+        generateBotResponse(incomingMessageDiv);
+    }, 500);
+};
 
-document.getElementById('victoryModal').addEventListener('click', (e) => {
-    if (e.target === victoryModal) victoryModal.style.display = 'none';
+// Enter para enviar
+messageInput.addEventListener("keydown", (e) => {
+    const userMessage = e.target.value.trim();
+    if (e.key === "Enter" && userMessage && !e.shiftKey) {
+        handleOutgoingMessage(e);
+    }
 });
 
-window.addEventListener("DOMContentLoaded", async () => {
-    await initDataSDK();
-    initGame();
+// Ajuste altura
+messageInput.addEventListener("input", () => {
+    messageInput.style.height = `${initialInputHeight}px`;
+    messageInput.style.height = `${messageInput.scrollHeight}px`;
 });
+
+// Archivos
+fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        fileUploadWrapper.querySelector("img").src = e.target.result;
+        fileUploadWrapper.classList.add("file-uploaded");
+
+        const base64String = e.target.result.split(",")[1];
+
+        userData.file = {
+            data: base64String,
+            mime_type: file.type
+        };
+
+        fileInput.value = "";
+    };
+
+    reader.readAsDataURL(file);
+});
+
+fileCancelButton.addEventListener("click", () => {
+    userData.file = {};
+    fileUploadWrapper.classList.remove("file-uploaded");
+});
+
+// Abrir/cerrar chatbot
+chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
+CloseChatbot.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
+
+// Botón enviar
+sendMessageButton.addEventListener("click", (e) => handleOutgoingMessage(e));
