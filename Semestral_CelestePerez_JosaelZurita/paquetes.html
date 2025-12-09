@@ -6,6 +6,42 @@
     <title>Paquetes Turísticos - Coclé</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+<!-- BOTÓN FLOTANTE -->
+<button id="chatbot-toggler">
+    <span>💬</span>
+    <span>✖</span>
+</button>
+
+<!-- CHATBOT POPUP -->
+<div class="chatbot-popup">
+    <div class="chat-header">
+        <div class="header-info">
+            <div class="chatbot-logo">🤖</div>
+            <h2 class="logo-text">Asistente</h2>
+        </div>
+        <button id="close-chatbot">×</button>
+    </div>
+
+    <div class="chat-body"></div>
+
+    <div class="chat-footer">
+        <form class="chat-form">
+            <textarea class="message-input" placeholder="Escribe un mensaje..." required></textarea>
+
+            <div class="chat-controls">
+                <button type="button" id="file-upload">📎</button>
+                <button type="submit" id="send-message">➤</button>
+            </div>
+
+            <input type="file" id="file-input" hidden />
+            <div class="file-upload-wrapper">
+                <img src="" alt="">
+                <button id="file-cancel">×</button>
+            </div>
+        </form>
+    </div>
+</div>
+<body>
 <body>
 
 <header class="site-header">
@@ -17,11 +53,11 @@
                     <li><a href="index.html" class="active">Inicio</a></li>
                     <li><a href="paquetes.html">Paquetes</a></li>
                     <li><a href="about.html">Sobre Nosotros</a></li>
-                    <li><a href="juego.html">Juego</a></li>
+                    <li><a href="game.html">Juego</a></li>
                     <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="login.html">Iniciar Sesions</a></li>
                 </ul>
             </nav>
-
         </nav>
     </div>
 </header>
@@ -86,6 +122,6 @@
 <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 </script>
-
+<script src="chatbot.js"></script>
 </body>
 </html>

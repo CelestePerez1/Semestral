@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorama Turístico de Coclé</title>
+
+    <!-- Estilos separados -->
+    <link rel="stylesheet" href="game.css">
+
+    <!-- SDKs -->
+    <script src="/_sdk/data_sdk.js"></script>
+    <script src="/_sdk/element_sdk.js"></script>
+</head>
+
+<body class="h-full">
+
+    <div class="game-wrapper">
+        <div class="game-container">
+
+            <!-- ==== ENCABEZADO ==== -->
+            <div class="game-header">
+                <h1 class="game-title" id="gameTitle">🎮 Memorama Turístico de Coclé</h1>
+                <p class="game-subtitle" id="gameSubtitle">Encuentra las parejas de íconos turísticos</p>
+                <div class="game-instructions" id="gameInstructions">
+                    Haz clic en las cartas para voltearlas y encuentra todas las parejas. ¡Hazlo en el menor tiempo posible!
+                </div>
+            </div>
+
+            <!-- ==== ESTADÍSTICAS ==== -->
+            <div class="game-stats">
+                <div class="stat-card">
+                    <div class="stat-label">⏱️ Tiempo</div>
+                    <div class="stat-value" id="gameTime">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">🎯 Movimientos</div>
+                    <div class="stat-value" id="gameMoves">0</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-label">⭐ Parejas</div>
+                    <div class="stat-value">
+                        <span id="gamePairs">0</span>/8
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==== TABLERO ==== -->
+            <div id="gameBoard" class="game-board"></div>
+
+            <!-- ==== BOTONES ==== -->
+            <div class="game-controls">
+                <button class="btn" onclick="resetGame()">🔄 Nuevo Juego</button>
+                <button class="btn btn-secondary" onclick="pauseGame()" id="pauseBtn">⏸️ Pausar</button>
+            </div>
+
+            <!-- ==== PUNTUACIONES ==== -->
+            <div class="scores-section">
+                <h2 class="scores-title" id="scoresTitle">🏆 Mejores Tiempos</h2>
+                <div id="scoresList" class="scores-list">
+                    <div class="empty-scores">No hay puntuaciones aún. ¡Sé el primero!</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==== MODAL DE VICTORIA ==== -->
+    <div id="victoryModal" class="modal">
+        <div class="modal-content">
+            <div class="victory-message">🎉 ¡Felicidades! ¡Completaste el juego!</div>
+
+            <p style="font-size: 1.3rem; margin-bottom: 1rem;">
+                <strong>Tiempo:</strong> <span id="finalTime"></span>s <br>
+                <strong>Movimientos:</strong> <span id="finalMoves"></span>
+            </p>
+
+            <form id="nameForm" onsubmit="saveScore(event)">
+                <div class="form-group">
+                    <label for="playerName">Ingresa tu nombre:</label>
+                    <input type="text" id="playerName" required placeholder="Tu nombre" maxlength="20">
+                </div>
+
+                <button type="submit" class="btn" id="saveBtn">💾 Guardar Puntuación</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==== JS SEPARADO ==== -->
+    <script src="game.js"></script>
+
+</body>
+</html>
