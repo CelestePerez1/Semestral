@@ -1,9 +1,15 @@
+// ===============================
+// 🔐 LEER API KEY DESDE env.js
+// ===============================
 const OPENAI_API_KEY = window.ENV?.OPENAI_API_KEY || "";
 
 if (!OPENAI_API_KEY) {
-    console.error("⚠️ ERROR: Falta la variable de entorno OPENAI_API_KEY");
+    console.error("❌ ERROR: Falta la variable de entorno OPENAI_API_KEY en env.js");
 }
 
+// ===============================
+// 📌 VARIABLES DEL DOM
+// ===============================
 const chatBody = document.querySelector(".chat-body");
 const messageInput = document.querySelector(".message-input");
 const sendMessageButton = document.querySelector("#send-message");
@@ -15,15 +21,27 @@ const CloseChatbot = document.querySelector("#close-chatbot");
 
 const API_URL = "https://api.openai.com/v1/chat/completions";
 
+// ===============================
+// 📌 ESTADO DEL CHAT
+// ===============================
 const chatHistory = [];
 const initialInputHeight = messageInput.scrollHeight;
 
-// Scroll al final
+let userData = {
+    message: "",
+    file: {}
+};
+
+// ===============================
+// 📌 FUNCIONES
+// ===============================
+
+// Scroll automático
 const scrollToLatestMessage = () => {
     chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
 };
 
-// Crear mensaje
+// Crear un mensaje HTML
 const createMessageElement = (content, ...classes) => {
     const div = document.createElement("div");
     div.classList.add("message", ...classes);
@@ -32,7 +50,7 @@ const createMessageElement = (content, ...classes) => {
 };
 
 // ===============================
-// 🤖 RESPUESTA DEL BOT
+// 🤖 PEDIR RESPUESTA DE OPENAI
 // ===============================
 const generateBotResponse = async (incomingMessageDiv) => {
     const messageElement = incomingMessageDiv.querySelector(".message-text");
@@ -68,7 +86,6 @@ const generateBotResponse = async (incomingMessageDiv) => {
             role: "assistant",
             content: botText
         });
-
     } catch (error) {
         messageElement.innerText = "❌ Error: " + error.message;
         messageElement.style.color = "red";
@@ -79,7 +96,7 @@ const generateBotResponse = async (incomingMessageDiv) => {
 };
 
 // ===============================
-// 📤 Enviar mensaje
+// 📤 ENVIAR MENSAJE DEL USUARIO
 // ===============================
 const handleOutgoingMessage = (e) => {
     e.preventDefault();
@@ -120,6 +137,10 @@ const handleOutgoingMessage = (e) => {
     }, 500);
 };
 
+// ===============================
+// 🟦 EVENTOS
+// ===============================
+
 // Enter para enviar
 messageInput.addEventListener("keydown", (e) => {
     const userMessage = e.target.value.trim();
@@ -128,13 +149,13 @@ messageInput.addEventListener("keydown", (e) => {
     }
 });
 
-// Ajuste altura
+// Ajustar altura del input
 messageInput.addEventListener("input", () => {
     messageInput.style.height = `${initialInputHeight}px`;
     messageInput.style.height = `${messageInput.scrollHeight}px`;
 });
 
-// Archivos
+// Subir archivo
 fileInput.addEventListener("change", () => {
     const file = fileInput.files[0];
     if (!file) return;
@@ -157,12 +178,13 @@ fileInput.addEventListener("change", () => {
     reader.readAsDataURL(file);
 });
 
+// Cancelar archivo
 fileCancelButton.addEventListener("click", () => {
     userData.file = {};
     fileUploadWrapper.classList.remove("file-uploaded");
 });
 
-// Abrir/cerrar chatbot
+// Abrir/Cerrar chatbot
 chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
 CloseChatbot.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
 
